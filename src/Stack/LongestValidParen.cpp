@@ -82,5 +82,51 @@ int LongestValidParentheses(string s){
     len++;
     ans = max(ans,len);
   }
-  return ans;
+  return ans;	
 }
+
+// now we should consider use less space;
+int LongestValidParen(string& s) {
+	// here instead, we use the doubly scan;
+	int ans = 0, depth = 0, start = -1;
+
+	// the left scan
+	for (int i = 0; i < s.size(); i++) {
+		if (s[i] == '(') {
+			depth++;
+		}
+		else {
+			depth--;
+			if (depth < 0) {
+				depth = 0;
+				start = i;
+			}
+			else if (depth == 0) {
+				ans = max(ans, i - start);
+			}
+		}
+	}
+
+	depth = 0;
+	start = s.size();
+	// the right scan
+	for (int i = s.size() - 1; i > -1; i--) {
+		if (s[i] == ')') {
+			depth++;
+		}
+		else {
+			depth--;
+			if (depth < 0) {
+				depth = 0;
+				start = i;
+			}
+			else if (depth == 0) {
+				ans = max(ans, i - start);
+			}
+		}
+	}
+
+	return ans;
+}
+
+
