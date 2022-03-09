@@ -22,3 +22,19 @@ bool isSymmetric(TreeNode* p, TreeNode* q) {
 
 	return (p->val == q->val) && (isSameTree(p->left, q->right)) && (isSameTree(p->right, q->left));
 }
+
+// Function detect whether the tree is balanced
+int NodeDepth(TreeNode* x) {
+	if (x == nullptr) return 0;
+
+	int l = NodeDepth(x->left);
+	int r = NodeDepth(x->right);
+
+	if (l < 0 || r < 0 || abs(l - r)>1) return -1;
+
+	return max(l, r) + 1;
+}
+
+bool BalancedTree(TreeNode* p) {
+	return (NodeDepth(p) >= 0);
+}
