@@ -101,3 +101,41 @@ TreeNode* bstFromPreorder2(vector<int>& preorder) {
     constructTree(root, preorder, 1, n - 1);
     return root;
 };
+
+
+// now construct the tree using preorder and inorder
+void constructTree1(vector<int>& preorder, vector<int>& inorder, TreeNode* r) {
+    int r_val = r->val;
+    int index = 0;
+    if (preorder.size() == 1) {
+        return;
+    }
+    for (; index < inorder.size(); index++) {
+        if (inorder[index] == r_val) {
+            break;
+        }
+    }
+    vector<int> left_preorder(preorder.begin() + 1, preorder.begin() + 1 + index);
+    vector<int> right_preorder(preorder.begin() + 1 + index, preorder.end());
+
+    vector<int> left_inorder(inorder.begin(), inorder.begin() + index);
+    vector<int> right_inorder(inorder.begin() + index + 1, inorder.end());
+
+    if (!left_preorder.empty()) {
+        TreeNode* temp_node = new TreeNode(left_preorder[0]);
+        r->left = temp_node;
+        constructTree1(left_preorder, left_inorder, r->left);
+    }
+    if (!right_preorder.empty()) {
+        TreeNode* temp_node = new TreeNode(right_preorder[0]);
+        r->right = temp_node;
+        constructTree1(right_preorder, right_inorder, r->right);
+    }
+};
+
+// This is building tree from the preorder and inorder.
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    TreeNode* root = new TreeNode(preorder[0]);
+    constructTree1(preorder, inorder, root);
+    return root;
+}
